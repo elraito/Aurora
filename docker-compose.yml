@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  aurora-db:
+    container_name: aurora-db
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=aurora-db
+    volumes:
+      - aurora-db:/var/lib/postgresql/data
+
+volumes:
+  aurora-db:
