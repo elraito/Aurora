@@ -5,7 +5,8 @@ namespace Aurora.Api.Dtos.User.Requests
 {
     public class UpdateRequest
     {
-        public string? Username { get; set; }
+        [Required]
+        public string Username { get; set; } = default!;
 
         [EnumDataType(typeof(Role))]
         public Role Role { get; set; }
