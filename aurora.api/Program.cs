@@ -19,6 +19,7 @@ builder.Services.AddScoped<IDbConnection>(_ =>
         throw new Exception("DbSettings not found");
     return new NpgsqlConnection($"Server={dbSettings.Server};Database={dbSettings.Database};User Id={dbSettings.UserId};Password={dbSettings.Password};");
 });
+builder.Services.AddTransient<DatabaseService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
@@ -26,6 +27,13 @@ builder.Services.AddScoped<IPasswordService, PasswordService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbService = scope.ServiceProvider.GetRequiredService<DatabaseService>();
+    await dbService.InitDatabase();
+}
 
 app.UseSwagger();
 app.UseSwaggerUI();
